@@ -88,11 +88,3 @@ uvicorn app.main:app --reload     # applies schema.sql on startup
 | `backend/app/api/` | Pydantic contracts and routes |
 | `backend/datasets/alt-text.jsonl` | Three-item alt-text dataset, including a decorative image whose correct alt text is empty |
 | `sdk/evalctl/` | HTTP client and CLI |
-
-## Status
-
-The services work; the HTTP surface needs two fixes before the CLI can drive it:
-
-- **Only the prompts router is mounted.** `app/main.py` includes `prompts.router` but not `datasets`, `runs`, `diff`, or `monitor`, so those endpoints return 404.
-- **`POST /prompts/versions` returns a 500.** The repository returns `UUID` objects and the `VersionOut` response model declares `str` fields; converting the IDs with `str()` fixes it.
-- No dependency files or tests; `sdk/README.md` has an unclosed code block.
